@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www/html
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    image: php:8.2-fpm
+    container_name: php-fpm
+    volumes:
+      - ./app:/var/www/html
+
+  php-cli:
+    image: php:8.2-cli
+    container_name: php-cli
+    volumes:
+      - ./app:/var/www/html
+    entrypoint: ["php", "-a"]
+
+volumes:
+  app:
